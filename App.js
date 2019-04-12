@@ -1,21 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Provider as PaperProvider } from 'react-native-paper';
+import Login from './src/components/Login';
+import Signup from './src/components/Signup';
+import WithEmail from './src/components/WithEmail';
+import AsStudent from './src/components/AsStudent';
+import AsHouseHost from './src/components/AsHouseHost';
+import CheckOut from './src/components/Checkout';
+import Properties from './src/components/Properties';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>khaya</Text>
-      </View>
-    );
-  }
-}
+const App = () => (
+	<PaperProvider>
+		<Properties />
+	</PaperProvider>
+);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
