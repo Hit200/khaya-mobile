@@ -1,44 +1,77 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
-const WithEmail = () => (
-	<Fragment>
-		<View style={styles.Container}>
-			<Image source={require('../../assets/logo.png')} resizeMode="contain" style={styles.Image} />
-		</View>
-		<View style={styles.Divider} />
-		<View style={styles.Container}>
-			<Text style={styles.Text}>Please fill in your credentials</Text>
-		</View>
-		<View style={styles.Form}>
-			<TextInput
-				mode="outlined"
-				label="Email"
-				value={''}
-				onChangeText={text => text}
-				style={styles.Inputs}
-			/>
-			<TextInput
-				mode="outlined"
-				label="Password"
-				value={''}
-				onChangeText={text => text}
-				style={styles.Inputs}
-			/>
-		</View>
-		<View style={styles.Container}>
-			<Button
-				color={'#000000'}
-				style={styles.Button}
-				mode="outlined"
-				onPress={() => console.log('Pressed')}>
-				Login
-			</Button>
-			<Text>Signup instead ?</Text>
-		</View>
-	</Fragment>
-);
+
+class WithEmail extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			username: '',
+			password: ''
+		};
+	}
+
+	handleSubmit = () => {
+		const { username, password } = this.state;
+		fetch(`https://khaya-api.herokuapp.com/parse/login?username=${username}&password=${password}`, {
+			method: 'GET',
+			headers: {
+				'X-Parse-Application-Id': 'parse-khaya-app-ID'
+			}
+		})
+			.then(res => res.json())
+			.then(res => {
+				const { success, ...user } = res;
+			})
+			.catch(error => console.log(error));
+	};
+
+	render() {
+		return (
+			<Fragment>
+				<View style={styles.Container}>
+					<Image
+						source={require('../../assets/logo.png')}
+						resizeMode="contain"
+						style={styles.Image}
+					/>
+				</View>
+				<View style={styles.Divider} />
+				<View style={styles.Container}>
+					<Text style={styles.Text}>Please fill in your credentials</Text>
+				</View>
+				<View style={styles.Form}>
+					<TextInput
+						mode="outlined"
+						label="Email"
+						value={this.state.username}
+						onChangeText={text => this.setState({ username: text })}
+						style={styles.Inputs}
+					/>
+					<TextInput
+						mode="outlined"
+						label="Password"
+						value={this.state.password}
+						onChangeText={text => this.setState({ password: text })}
+						style={styles.Inputs}
+					/>
+				</View>
+				<View style={styles.Container}>
+					<Button
+						color={'#000000'}
+						style={styles.Button}
+						mode="outlined"
+						onPress={() => this.handleSubmit()}>
+						Login
+					</Button>
+					<Text>Signup instead ?</Text>
+				</View>
+			</Fragment>
+		);
+	}
+}
 
 const styles = StyleSheet.create({
 	Text: {
@@ -79,4 +112,5 @@ const styles = StyleSheet.create({
 		marginBottom: 20
 	}
 });
+
 export default WithEmail;
