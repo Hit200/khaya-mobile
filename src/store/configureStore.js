@@ -1,10 +1,11 @@
 import { createStore, combineReducers } from 'redux';
-import reducer from './reducers/root';
+import { user } from './reducers/user';
+import propertyDetails from './reducers/propertyDetails';
+import rate from './reducers/rate';
+import checkout from './reducers/checkout';
 
 const rootReducer = combineReducers({
-	properties: reducer
+	user: user
 });
 
-const configureStore = () => createStore(rootReducer);
-
-export default configureStore;
+export const configureStore = () => createStore(rootReducer);

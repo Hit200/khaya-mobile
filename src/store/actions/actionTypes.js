@@ -1,8 +1,4 @@
-export const LOGIN = 'LOGIN';
-export const SIGNUP = 'SIGNUP';
+export const LOGIN_WITH_EMAIL = 'LOGIN_WITH_EMAIL';
 export const PROPERTY_DETAILS = 'PROPERTY_DETAILS';
-export const REVIEW = 'REVIEW';
 export const RATE = 'RATE';
-export const POST = 'POST';
-export const VERIFY = 'VERIFY';
-export const PAYMENT = 'PAYMENT';
+export const CHECKOUT = 'CHECKOUT';
