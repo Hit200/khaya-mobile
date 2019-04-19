@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-
+import { connect } from 'react-redux';
+import { fetchUser } from '../actions/fetchUser';
 
 class WithEmail extends Component {
 	constructor(props) {
@@ -13,19 +14,13 @@ class WithEmail extends Component {
 		};
 	}
 
-	handleSubmit = () => {
+	handleSubmit = async () => {
 		const { username, password } = this.state;
-		fetch(`https://khaya-api.herokuapp.com/parse/login?username=${username}&password=${password}`, {
-			method: 'GET',
-			headers: {
-				'X-Parse-Application-Id': 'parse-khaya-app-ID'
-			}
-		})
-			.then(res => res.json())
-			.then(res => {
-				const { success, ...user } = res;
-			})
-			.catch(error => console.log(error));
+		const res = await this.props.fetchUser(username, password);
+
+		res.success
+			? this.props.navigation.navigate('Properties')
+			: this.props.navigation.navigate('WithEmail');
 	};
 
 	render() {
@@ -66,7 +61,7 @@ class WithEmail extends Component {
 						onPress={() => this.handleSubmit()}>
 						Login
 					</Button>
-					<Text>Signup instead ?</Text>
+					<Text onPress={() => this.props.navigation.navigate('Signup')}>Signup instead ?</Text>
 				</View>
 			</Fragment>
 		);
@@ -110,7 +105,13 @@ const styles = StyleSheet.create({
 	},
 	Inputs: {
 		marginBottom: 20
+	},
+	Borderless: {
+		borderBottomColor: 'transparent'
 	}
 });
 
-export default WithEmail;
+export default connect(
+	null,
+	{ fetchUser }
+)(WithEmail);

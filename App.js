@@ -1,20 +1,34 @@
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
 import { Provider } from 'react-redux';
-import { configureStore } from './src/store/configureStore';
-import Login from './src/components/Login';
-import Signup from './src/components/Signup';
-import WithEmail from './src/components/WithEmail';
-import AsStudent from './src/components/AsStudent';
-import AsHouseHost from './src/components/AsHouseHost';
-import CheckOut from './src/components/Checkout';
-import Properties from './src/components/Properties';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import LoginScreen from './src/components/Login';
+import SignupScreen from './src/components/Signup';
+import WithEmailScreen from './src/components/WithEmail';
+import AsStudentScreen from './src/components/AsStudent';
+import AsHouseHostScreen from './src/components/AsHouseHost';
+import CheckOutScreen from './src/components/Checkout';
+import PropertiesScreen from './src/components/Properties';
+import DetailsScreen from './src/components/Detail';
+import store from './src/store';
 
-const store = configureStore();
+const HomeStackNavigator = createAppContainer(
+	createStackNavigator(
+		{
+			Properties: PropertiesScreen,
+			Login: LoginScreen,
+			WithEmail: WithEmailScreen,
+			AsStudent: AsStudentScreen,
+			AsHouseHost: AsHouseHostScreen,
+			Signup: SignupScreen
+		},
+		{ headerMode: 'none' }
+	)
+);
 
 const Main = () => (
 	<PaperProvider>
-		<Properties />
+		<HomeStackNavigator />
 	</PaperProvider>
 );
 

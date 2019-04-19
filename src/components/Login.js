@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const Login = () => (
+const Login = props => (
 	<Fragment>
 		<View>
 			<Text style={styles.Text}>Login To Khaya</Text>
@@ -15,7 +15,7 @@ const Login = () => (
 				color={'#000000'}
 				style={styles.Button}
 				mode="outlined"
-				onPress={() => console.log('Pressed')}>
+				onPress={() => props.navigation.navigate('WithEmail')}>
 				With Email
 			</Button>
 			<Button

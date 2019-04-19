@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native';
-import { Appbar, Text, Button, Switch, Searchbar, Card } from 'react-native-paper';
+import { Appbar, Text, Button, Searchbar, Card } from 'react-native-paper';
 import Stars from 'react-native-stars';
 import { Ionicons } from '@expo/vector-icons';
 import { InstantSearch } from 'react-instantsearch/native';
@@ -32,18 +32,17 @@ const Results = connectInfiniteHits(({ hits, hasMore, refine }) => {
 			data={hits}
 			onEndReached={onEndReached}
 			keyExtractor={property => property.objectID}
-			renderItem={({ item }) => {
-				console.log(item);
-				return hits === [] ? <Text>No Houses Found</Text> : <Property pty={item} />;
-			}}
+			renderItem={({ item }) =>
+				hits === [] ? <Text>No Houses Found</Text> : <Property pty={item} id={property.objectID} />
+			}
 		/>
 	);
 });
 
-const Property = ({ pty }) => {
+const Property = ({ pty, id }, props) => {
 	return (
 		<TouchableWithoutFeedback>
-			<Card>
+			<Card onPress={() => props.navigation.navigate('Details', { id })}>
 				<Card.Title subtitle={pty.location} />
 				<Card.Cover
 					source={{
@@ -76,36 +75,29 @@ const Property = ({ pty }) => {
 		</TouchableWithoutFeedback>
 	);
 };
-const Properties = () => (
+const Properties = props => (
 	<InstantSearch
 		appId="D97UPSIQ04"
 		apiKey="4aab387d93c9f7129edfe6d2bda44ff0"
 		indexName="Properties">
-		<ScrollView>
-			<Appbar.Header style={styles.AppBarTheme}>
-				<Appbar.BackAction onPress={() => console.log('Going Back')} />
-				<Appbar.Content title="Khaya" subtitle="Home" />
-				<Appbar.Action icon="menu" onPress={() => console.log('See Options')} />
-			</Appbar.Header>
-			<View style={styles.Container}>
-				<Text style={{ marginBottom: -30 }}>Show Map</Text>
-				<View style={styles.Filters}>
-					<Switch
-						color={'#000000'}
-						value={false}
-						onValueChange={() => console.log('Switch Toggled')}
-					/>
-					<Button
-						color={'#ffffff'}
-						style={styles.Button}
-						mode="outlined"
-						onPress={() => console.log('Pressed')}>
-						Apply Filters
-					</Button>
-				</View>
-				<SearchBox />
+		<Appbar.Header style={styles.AppBarTheme}>
+			<Appbar.BackAction onPress={() => console.log('Going Back')} />
+			<Appbar.Content title="Khaya" subtitle="Home" />
+			<Appbar.Action icon="menu" onPress={() => props.navigation.navigate('Login')} />
+		</Appbar.Header>
+		<View style={styles.Container}>
+			<View style={styles.Filters}>
+				<Button
+					color={'#ffffff'}
+					style={styles.Button}
+					mode="outlined"
+					onPress={() => console.log('Pressed')}>
+					Apply Filters
+				</Button>
 			</View>
-
+			<SearchBox />
+		</View>
+		<ScrollView>
 			<Results />
 		</ScrollView>
 	</InstantSearch>

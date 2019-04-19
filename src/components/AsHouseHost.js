@@ -29,7 +29,10 @@ class AsHouseHost extends Component {
 			}
 		})
 			.then(res => res.json())
-			.then(res => console.log(res))
+			.then(res => {
+				console.log(res);
+				return this.props.navigation.navigate('Login');
+			})
 			.catch(error => console.log(error));
 	};
 
@@ -100,7 +103,9 @@ class AsHouseHost extends Component {
 						onPress={() => this.handleSubmit()}>
 						Sign Up
 					</Button>
-					<Text>I already have an account</Text>
+					<Text onPress={() => this.props.navigation.navigate('Login')}>
+						I already have an account
+					</Text>
 				</View>
 			</ScrollView>
 		);

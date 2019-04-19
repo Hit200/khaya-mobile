@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 
-const Signup = () => (
+const Signup = props => (
 	<Fragment>
 		<View>
 			<Text style={styles.Text}>Create an account</Text>
@@ -15,14 +15,14 @@ const Signup = () => (
 				color={'#000000'}
 				style={styles.Button}
 				mode="outlined"
-				onPress={() => console.log('Pressed')}>
+				onPress={() => props.navigation.navigate('AsStudent')}>
 				As Student
 			</Button>
 			<Button
 				color={'#000000'}
 				style={styles.Button}
 				mode="outlined"
-				onPress={() => console.log('Pressed')}>
+				onPress={() => props.navigation.navigate('AsHouseHost')}>
 				As Home Owner
 			</Button>
 		</View>
