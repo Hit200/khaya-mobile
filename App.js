@@ -16,6 +16,7 @@ const HomeStackNavigator = createAppContainer(
 	createStackNavigator(
 		{
 			Properties: PropertiesScreen,
+			Details: DetailsScreen,
 			Login: LoginScreen,
 			WithEmail: WithEmailScreen,
 			AsStudent: AsStudentScreen,

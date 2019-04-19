@@ -14,13 +14,11 @@ class WithEmail extends Component {
 		};
 	}
 
-	handleSubmit = async () => {
+	handleSubmit = () => {
 		const { username, password } = this.state;
-		const res = await this.props.fetchUser(username, password);
+		this.props.fetchUser(username, password);
 
-		res.success
-			? this.props.navigation.navigate('Properties')
-			: this.props.navigation.navigate('WithEmail');
+		this.props.navigation.navigate('Properties');
 	};
 
 	render() {

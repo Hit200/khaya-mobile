@@ -30,7 +30,7 @@ export const fetchUser = (username, password) => dispatch => {
 				}
 			})
 				.then(res => res.json())
-				.then(res => res)
+				.then(res => console.log(res))
 				.catch(error => console.log(error));
 		})
 		.catch(error => console.log(error));

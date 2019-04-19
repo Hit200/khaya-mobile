@@ -33,7 +33,7 @@ const Results = connectInfiniteHits(({ hits, hasMore, refine }) => {
 			onEndReached={onEndReached}
 			keyExtractor={property => property.objectID}
 			renderItem={({ item }) =>
-				hits === [] ? <Text>No Houses Found</Text> : <Property pty={item} id={property.objectID} />
+				hits === [] ? <Text>No Houses Found</Text> : <Property pty={item} id={item.objectID} />
 			}
 		/>
 	);
