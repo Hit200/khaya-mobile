@@ -1,7 +1,7 @@
 import { FETCH_SELECTED_PROPERTY } from '../actions/types';
 
 const initialState = {
-	property: {}
+	id: ''
 };
 
 export default (state = initialState, action) => {

@@ -1,10 +1,11 @@
-import React from 'react';
-import { StyleSheet, View, FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, View, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { Appbar, Text, Button, Searchbar, Card } from 'react-native-paper';
 import Stars from 'react-native-stars';
 import { Ionicons } from '@expo/vector-icons';
 import { InstantSearch } from 'react-instantsearch/native';
 import { connectSearchBox, connectInfiniteHits } from 'react-instantsearch/connectors';
+import DetailsScreen from './Details';
 
 const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
 	return (
@@ -21,7 +22,7 @@ const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
 	);
 });
 
-const Results = connectInfiniteHits(({ hits, hasMore, refine }) => {
+const Results = connectInfiniteHits(({ hits, hasMore, refine, navigation }) => {
 	const onEndReached = () => {
 		if (hasMore) {
 			refine();
@@ -32,49 +33,51 @@ const Results = connectInfiniteHits(({ hits, hasMore, refine }) => {
 			data={hits}
 			onEndReached={onEndReached}
 			keyExtractor={property => property.objectID}
-			renderItem={({ item }) =>
-				hits === [] ? <Text>No Houses Found</Text> : <Property pty={item} id={item.objectID} />
-			}
+			renderItem={({ item }) => {
+				console.log(item);
+				return (
+					<TouchableOpacity onPress={() => navigation.navigate('Details', { id: item.objectID })}>
+						<Property pty={item} />
+					</TouchableOpacity>
+				);
+			}}
 		/>
 	);
 });
 
-const Property = ({ pty, id }, props) => {
-	return (
-		<TouchableWithoutFeedback>
-			<Card onPress={() => props.navigation.navigate('Details', { id })}>
-				<Card.Title subtitle={pty.location} />
-				<Card.Cover
-					source={{
-						uri: pty.media[0]
-					}}
+const Property = ({ pty }) => (
+	<Card>
+		<Card.Title subtitle={pty.location} />
+		<Card.Cover
+			source={{
+				uri: pty.media[0]
+			}}
+		/>
+		<Card.Content>
+			<View style={styles.Filters}>
+				<Stars
+					display={pty.overallRating}
+					spacing={8}
+					count={5}
+					starSize={20}
+					backingColor="white"
+					fullStar={<Ionicons name="md-star" size={20} color="black" />}
+					emptyStar={<Ionicons name="md-star" size={20} color="white" />}
 				/>
-				<Card.Content>
-					<View style={styles.Filters}>
-						<Stars
-							display={pty.overallRating}
-							spacing={8}
-							count={5}
-							starSize={20}
-							backingColor="white"
-							fullStar={<Ionicons name="md-star" size={20} color="black" />}
-							emptyStar={<Ionicons name="md-star" size={20} color="white" />}
-						/>
-						<Text>{pty.verified === false ? 'Not Verified' : 'Verified'}</Text>
-					</View>
-					<View>
-						<Text style={styles.Info}>
-							{pty.shared === true ? 'Shared - ' : ''} {pty.room.length} rooms
-						</Text>
-						<Text style={styles.Info}>
-							${pty.minPrice} - ${pty.maxPrice} / month
-						</Text>
-					</View>
-				</Card.Content>
-			</Card>
-		</TouchableWithoutFeedback>
-	);
-};
+				<Text>{pty.verified === false ? 'Not Verified' : 'Verified'}</Text>
+			</View>
+			<View>
+				<Text style={styles.Info}>
+					{pty.shared === true ? 'Shared - ' : ''} {pty.room.length} rooms
+				</Text>
+				<Text style={styles.Info}>
+					${pty.minPrice} - ${pty.maxPrice} / month
+				</Text>
+			</View>
+		</Card.Content>
+	</Card>
+);
+
 const Properties = props => (
 	<InstantSearch
 		appId="D97UPSIQ04"
