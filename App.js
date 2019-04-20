@@ -9,19 +9,19 @@ import AsStudentScreen from './src/components/AsStudent';
 import AsHouseHostScreen from './src/components/AsHouseHost';
 import CheckOutScreen from './src/components/Checkout';
 import PropertiesScreen from './src/components/Properties';
-import DetailsScreen from './src/components/Detail';
 import store from './src/store';
+import DetailsScreen from './src/components/Details';
 
 const HomeStackNavigator = createAppContainer(
 	createStackNavigator(
 		{
 			Properties: PropertiesScreen,
-			Details: DetailsScreen,
 			Login: LoginScreen,
 			WithEmail: WithEmailScreen,
 			AsStudent: AsStudentScreen,
 			AsHouseHost: AsHouseHostScreen,
-			Signup: SignupScreen
+			Signup: SignupScreen,
+			Details: DetailsScreen
 		},
 		{ headerMode: 'none' }
 	)
