@@ -5,7 +5,6 @@ import Stars from 'react-native-stars';
 import { Ionicons } from '@expo/vector-icons';
 import { InstantSearch } from 'react-instantsearch/native';
 import { connectSearchBox, connectInfiniteHits } from 'react-instantsearch/connectors';
-import DetailsScreen from './Details';
 
 const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
 	return (
@@ -18,29 +17,6 @@ const SearchBox = connectSearchBox(({ refine, currentRefinement }) => {
 			spellCheck={false}
 			autoCorrect={false}
 			autoCapitalize="none"
-		/>
-	);
-});
-
-const Results = connectInfiniteHits(({ hits, hasMore, refine, navigation }) => {
-	const onEndReached = () => {
-		if (hasMore) {
-			refine();
-		}
-	};
-	return (
-		<FlatList
-			data={hits}
-			onEndReached={onEndReached}
-			keyExtractor={property => property.objectID}
-			renderItem={({ item }) => {
-				console.log(item);
-				return (
-					<TouchableOpacity onPress={() => navigation.navigate('Details', { id: item.objectID })}>
-						<Property pty={item} />
-					</TouchableOpacity>
-				);
-			}}
 		/>
 	);
 });
@@ -78,33 +54,65 @@ const Property = ({ pty }) => (
 	</Card>
 );
 
-const Properties = props => (
-	<InstantSearch
-		appId="D97UPSIQ04"
-		apiKey="4aab387d93c9f7129edfe6d2bda44ff0"
-		indexName="Properties">
-		<Appbar.Header style={styles.AppBarTheme}>
-			<Appbar.BackAction onPress={() => console.log('Going Back')} />
-			<Appbar.Content title="Khaya" subtitle="Home" />
-			<Appbar.Action icon="menu" onPress={() => props.navigation.navigate('Login')} />
-		</Appbar.Header>
-		<View style={styles.Container}>
-			<View style={styles.Filters}>
-				<Button
-					color={'#ffffff'}
-					style={styles.Button}
-					mode="outlined"
-					onPress={() => console.log('Pressed')}>
-					Apply Filters
-				</Button>
-			</View>
-			<SearchBox />
-		</View>
-		<ScrollView>
-			<Results />
-		</ScrollView>
-	</InstantSearch>
-);
+const Results = connectInfiniteHits(({ hits, hasMore, refine, navigation }) => {
+	const onEndReached = () => {
+		if (hasMore) {
+			refine();
+		}
+	};
+	return (
+		<FlatList
+			data={hits}
+			onEndReached={onEndReached}
+			keyExtractor={property => property.objectID}
+			renderItem={({ item }) => {
+				return (
+					<TouchableOpacity
+						onPress={() => {
+							navigation.navigate('Details', { id: item.objectID });
+						}}>
+						<Property pty={item} />
+					</TouchableOpacity>
+				);
+			}}
+		/>
+	);
+});
+
+class Properties extends Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<InstantSearch
+				appId="D97UPSIQ04"
+				apiKey="4aab387d93c9f7129edfe6d2bda44ff0"
+				indexName="Properties">
+				<ScrollView>
+					<Appbar.Header style={styles.AppBarTheme}>
+						<Appbar.Content title="Khaya" subtitle="Home" />
+						<Appbar.Action icon="menu" onPress={() => this.props.navigation.navigate('Login')} />
+					</Appbar.Header>
+					<View style={styles.Container}>
+						<View style={styles.Filters}>
+							<Button
+								color={'#ffffff'}
+								style={styles.Button}
+								mode="outlined"
+								onPress={() => console.log('Pressed')}>
+								Apply Filters
+							</Button>
+						</View>
+						<SearchBox />
+					</View>
+					<Results navigation={this.props.navigation} />
+				</ScrollView>
+			</InstantSearch>
+		);
+	}
+}
 
 const styles = StyleSheet.create({
 	AppBarTheme: {

@@ -1,16 +1,21 @@
 import React from 'react';
-import { Provider as PaperProvider } from 'react-native-paper';
-import { Provider } from 'react-redux';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { Provider as PaperProvider } from 'react-native-paper'; // Theme Provider
+
+import { createStackNavigator, createAppContainer } from 'react-navigation'; // Stack Navigation
+
+// Application Screens
 import LoginScreen from './src/components/Login';
 import SignupScreen from './src/components/Signup';
 import WithEmailScreen from './src/components/WithEmail';
 import AsStudentScreen from './src/components/AsStudent';
 import AsHouseHostScreen from './src/components/AsHouseHost';
-import CheckOutScreen from './src/components/Checkout';
 import PropertiesScreen from './src/components/Properties';
-import store from './src/store';
 import DetailsScreen from './src/components/Details';
+import CheckoutScreen from './src/components/Checkout';
+
+// Redux
+import { Provider } from 'react-redux';
+import store from './src/store';
 
 const HomeStackNavigator = createAppContainer(
 	createStackNavigator(
@@ -21,9 +26,10 @@ const HomeStackNavigator = createAppContainer(
 			AsStudent: AsStudentScreen,
 			AsHouseHost: AsHouseHostScreen,
 			Signup: SignupScreen,
-			Details: DetailsScreen
+			Details: DetailsScreen,
+			Checkout: CheckoutScreen
 		},
-		{ headerMode: 'none' }
+		{ initialRouteName: 'Properties', headerMode: 'none' }
 	)
 );
 
