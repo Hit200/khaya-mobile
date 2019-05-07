@@ -50,7 +50,7 @@ class Details extends Component {
 		return (
 			<ScrollView>
 				<Appbar.Header style={styles.AppBarTheme}>
-					<Appbar.BackAction onPress={() => console.log('Going Back')} />
+					<Appbar.BackAction onPress={() => this.props.navigation.goBack()} />
 					<Appbar.Content title="Khaya" subtitle="Property Details" />
 				</Appbar.Header>
 				<View style={styles.Container}>

@@ -12,6 +12,8 @@ import AsHouseHostScreen from './src/components/AsHouseHost';
 import PropertiesScreen from './src/components/Properties';
 import DetailsScreen from './src/components/Details';
 import CheckoutScreen from './src/components/Checkout';
+import UploadPropertyImageScreen from './src/components/UploadPropertyImages';
+import UploadPropertyDetailsScreen from './src/components/UploadPropertyDetails';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -27,7 +29,9 @@ const HomeStackNavigator = createAppContainer(
 			AsHouseHost: AsHouseHostScreen,
 			Signup: SignupScreen,
 			Details: DetailsScreen,
-			Checkout: CheckoutScreen
+			Checkout: CheckoutScreen,
+			UploadImages: UploadPropertyImageScreen,
+			UploadDetails: UploadPropertyDetailsScreen
 		},
 		{ initialRouteName: 'Properties', headerMode: 'none' }
 	)

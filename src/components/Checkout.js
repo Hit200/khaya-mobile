@@ -26,7 +26,7 @@ const Checkout = props => {
 	return (
 		<Fragment>
 			<Appbar.Header style={styles.AppBarTheme}>
-				<Appbar.BackAction onPress={() => console.log('Going Back')} />
+				<Appbar.BackAction onPress={() => this.props.navigation.goBack()} />
 				<Appbar.Content title="Khaya" subtitle="Booking a room" />
 			</Appbar.Header>
 			<View style={styles.Container}>

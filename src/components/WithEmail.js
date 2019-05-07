@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
-import { connect } from 'react-redux';
-import { fetchUser } from '../actions/fetchUser';
 
 class WithEmail extends Component {
 	constructor(props) {
@@ -10,15 +8,44 @@ class WithEmail extends Component {
 
 		this.state = {
 			username: '',
-			password: ''
+			password: '',
+			role: ''
 		};
 	}
 
 	handleSubmit = () => {
 		const { username, password } = this.state;
-		this.props.fetchUser(username, password);
 
-		this.props.navigation.navigate('Properties');
+		fetch(`https://khaya-api.herokuapp.com/parse/login?username=${username}&password=${password}`, {
+			method: 'GET',
+			headers: {
+				'X-Parse-Application-Id': 'parse-khaya-app-ID'
+			}
+		})
+			.then(res => res.json())
+			.then(res => {
+				const { success, ...user } = res;
+				this.setState({ role: user.role });
+				return user.sessionToken;
+			})
+			.then(sessionToken => {
+				fetch(`https://khaya-api.herokuapp.com/signIn`, {
+					method: 'POST',
+					body: JSON.stringify({ sessionToken }),
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+					.then(res => res.json())
+					.then(res => {
+						return this.state.role === 'student'
+							? this.props.navigation.navigate('Properties')
+							: this.props.navigation.navigate('UploadImages');
+					})
+					.catch(error => console.log(error));
+			})
+			.catch(error => console.log(error));
 	};
 
 	render() {
@@ -38,7 +65,7 @@ class WithEmail extends Component {
 				<View style={styles.Form}>
 					<TextInput
 						mode="outlined"
-						label="Email"
+						label="Username"
 						value={this.state.username}
 						onChangeText={text => this.setState({ username: text })}
 						style={styles.Inputs}
@@ -109,7 +136,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default connect(
-	null,
-	{ fetchUser }
-)(WithEmail);
+export default WithEmail;
